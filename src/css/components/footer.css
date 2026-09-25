@@ -1,57 +1,99 @@
 @layer components {
 	.t360-footer {
-		margin-top: 24px;
-		background: var(--t360-surface);
-		color: var(--t360-text-2);
+		--ft-bg: var(--t360-c-footer);
+		--ft-fg: var(--t360-on-footer);
+		--ft-line: color-mix(in srgb, var(--ft-fg) 12%, transparent);
+		margin-top: calc(var(--t360-section-gap) * 2);
+		background: var(--ft-bg);
+		color: color-mix(in srgb, var(--ft-fg) 78%, var(--ft-bg));
 		font-size: var(--t360-fs-sm);
 	}
+	.t360-footer--light {
+		--ft-bg: #FFFFFF;
+		--ft-fg: var(--t360-text);
+		border-top: 1px solid var(--t360-border);
+	}
+	.t360-footer a:hover {
+		color: var(--ft-fg);
+	}
+
+	.t360-footer__news {
+		border-bottom: 1px solid var(--ft-line);
+	}
+	.t360-footer__news-inner {
+		display: grid;
+		gap: 12px;
+		padding-block: 24px;
+	}
+	@media (min-width: 1024px) {
+		.t360-footer__news-inner { grid-template-columns: 1fr minmax(0, 520px); align-items: center; }
+	}
+	.t360-footer__news-title {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin: 0;
+		font-family: var(--t360-font-heading);
+		font-size: var(--t360-fs-lg);
+		font-weight: 800;
+		color: var(--ft-fg);
+	}
+
 	.t360-footer__grid {
 		display: grid;
 		padding-block: 32px 8px;
 	}
 	@media (min-width: 1024px) {
 		.t360-footer__grid {
-			grid-template-columns: 2fr 1fr 1fr;
+			grid-template-columns: 2fr repeat(3, 1fr);
 			gap: 48px;
-			padding-block: 48px 32px;
+			padding-block: 56px 40px;
 		}
 	}
 
 	.t360-footer__brand {
-		padding-bottom: 16px;
+		padding-bottom: 20px;
+		color: var(--ft-fg);
 	}
 	.t360-logo--footer {
 		margin: 0;
 		padding: 0;
 	}
 	.t360-footer__about {
-		margin: 8px 0 12px;
+		margin: 10px 0 16px;
 		max-width: 44ch;
+		color: color-mix(in srgb, var(--ft-fg) 75%, var(--ft-bg));
 	}
-	.t360-footer__contact {
-		display: grid;
-		gap: 0;
+	.t360-footer__social {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 		margin: 0;
 		padding: 0;
 		list-style: none;
 	}
-	.t360-footer__contact a {
-		display: inline-flex;
-		align-items: center;
-		gap: 10px;
-		min-height: 44px;
-		font-weight: 600;
-		color: var(--t360-text);
+	.t360-footer__social a {
+		display: grid;
+		place-items: center;
+		width: 42px;
+		height: 42px;
+		border-radius: 50%;
+		background: var(--ft-line);
+		color: var(--ft-fg);
+		transition: background-color var(--t360-dur-fast) var(--t360-ease), color var(--t360-dur-fast) var(--t360-ease);
 	}
-	.t360-footer__contact .t360-icon {
-		width: 20px;
-		height: 20px;
-		color: var(--t360-text-3);
+	.t360-footer__social a:hover {
+		background: var(--t360-cta);
+		color: var(--t360-on-cta);
+	}
+	.t360-footer__social .t360-icon {
+		width: 18px;
+		height: 18px;
 	}
 
 	/* Link columns: disclosure rows on mobile, open columns on desktop. */
 	.t360-footer__col {
-		border-top: 1px solid var(--t360-border);
+		border-top: 1px solid var(--ft-line);
 	}
 	.t360-footer__title {
 		display: flex;
@@ -60,8 +102,8 @@
 		min-height: 52px;
 		font-family: var(--t360-font-heading);
 		font-size: var(--t360-fs-base);
-		font-weight: 600;
-		color: var(--t360-text);
+		font-weight: 700;
+		color: var(--ft-fg);
 		list-style: none;
 	}
 	.t360-footer__title::-webkit-details-marker {
@@ -75,18 +117,24 @@
 	.t360-footer__col[open] .t360-footer__title .t360-icon {
 		transform: rotate(180deg);
 	}
-	.t360-footer__links {
+	.t360-footer__links,
+	.t360-footer__contact {
 		margin: 0;
 		padding: 0 0 12px;
 		list-style: none;
 	}
-	.t360-footer__links a {
+	.t360-footer__links a,
+	.t360-footer__contact a,
+	.t360-footer__contact span {
 		display: flex;
 		align-items: center;
+		gap: 10px;
 		min-height: 40px;
 	}
-	.t360-footer__links a:hover {
-		color: var(--t360-text);
+	.t360-footer__contact .t360-icon {
+		width: 18px;
+		height: 18px;
+		opacity: 0.8;
 	}
 	@media (min-width: 1024px) {
 		.t360-footer__col {
@@ -94,21 +142,26 @@
 		}
 		.t360-footer__title {
 			min-height: 0;
-			margin-bottom: 8px;
+			margin-bottom: 12px;
 			pointer-events: none;
 		}
 		.t360-footer__title .t360-icon {
 			display: none;
 		}
+		.t360-footer__links a,
+		.t360-footer__contact a,
+		.t360-footer__contact span {
+			min-height: 34px;
+		}
 	}
 
 	.t360-footer__bottom {
-		border-top: 1px solid var(--t360-border);
+		border-top: 1px solid var(--ft-line);
 	}
 	.t360-footer__bottom-inner {
 		display: grid;
 		gap: 12px;
-		padding-block: 16px;
+		padding-block: 18px;
 	}
 	@media (min-width: 1024px) {
 		.t360-footer__bottom-inner {
@@ -125,22 +178,55 @@
 		list-style: none;
 	}
 	.t360-footer__payments li {
-		padding: 4px 8px;
-		border: 1px solid var(--t360-border);
-		border-radius: var(--t360-radius-sm);
-		background: var(--t360-bg);
+		padding: 5px 9px;
+		border-radius: 6px;
+		background: var(--ft-line);
+		color: var(--ft-fg);
 		font-size: var(--t360-fs-xs);
 		font-weight: 700;
-		color: var(--t360-text-2);
 	}
 	.t360-footer__copy {
 		margin: 0;
 		font-size: var(--t360-fs-xs);
-		color: var(--t360-text-3);
+	}
+
+	/* Floating WhatsApp ---------------------------------------------------- */
+	.t360-wafloat {
+		position: fixed;
+		right: 14px;
+		bottom: calc(var(--t360-bottom-nav-h) + var(--t360-safe-bottom) + 14px);
+		z-index: 44;
+		display: grid;
+		place-items: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 50%;
+		background: var(--t360-whatsapp);
+		color: #FFFFFF;
+		box-shadow: var(--t360-shadow-float);
+		transition: transform var(--t360-dur) var(--t360-ease);
+	}
+	.t360-wafloat:hover {
+		transform: scale(1.06);
+	}
+	.t360-wafloat .t360-icon {
+		width: 28px;
+		height: 28px;
+	}
+	body:not(.has-bottom-nav) .t360-wafloat {
+		bottom: calc(var(--t360-safe-bottom) + 16px);
+	}
+	@media (min-width: 1024px) {
+		.t360-wafloat { right: 24px; bottom: 24px; width: 56px; height: 56px; }
 	}
 
 	/* Interim styling for WooCommerce pages not yet redesigned (phases 3–6). */
 	.t360-page--wc .t360-page__title {
 		font-size: var(--t360-fs-xl);
+	}
+	.t360-page--wc .t360-wc-content {
+		padding: 16px;
+		border-radius: var(--t360-radius);
+		background: var(--t360-bg);
 	}
 }

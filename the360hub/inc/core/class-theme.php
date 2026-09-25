@@ -77,6 +77,9 @@ final class Theme {
 		if ( t360_setting( 'bottom_nav' ) ) {
 			$classes[] = 'has-bottom-nav';
 		}
+		if ( ! t360_setting( 'style_animations' ) ) {
+			$classes[] = 'no-anim';
+		}
 		return $classes;
 	}
 

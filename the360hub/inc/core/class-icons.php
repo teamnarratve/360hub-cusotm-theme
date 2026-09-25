@@ -51,7 +51,25 @@ final class Icons {
 			'phone'         => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
 			'mail'          => '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 			'check'         => '<path d="M20 6 9 17l-5-5"/>',
+			'zap'           => '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+			'arrow-right'   => '<path d="M5 12h14M12 5l7 7-7 7"/>',
+			'chevron-left'  => '<path d="m15 18-6-6 6-6"/>',
+			'pause'         => '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+			'play'          => '<path d="m6 3 14 9-14 9V3z"/>',
+			'map-pin'       => '<path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+			'sparkles'      => '<path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5A2 2 0 0 0 15.5 9.94l6.14 1.58a.5.5 0 0 1 0 .96L15.5 14.06a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/>',
 		);
+	}
+
+	/**
+	 * Filled brand icons (Simple Icons, CC0), keyed by name.
+	 */
+	private static function brands(): array {
+		static $brands = null;
+		if ( null === $brands ) {
+			$brands = require __DIR__ . '/social-icons.php';
+		}
+		return $brands;
 	}
 
 	/**
@@ -59,7 +77,7 @@ final class Icons {
 	 * provides the accessible name on the surrounding control.
 	 */
 	public static function get( string $name, string $css_class = '' ): string {
-		if ( ! isset( self::paths()[ $name ] ) ) {
+		if ( ! isset( self::paths()[ $name ] ) && ! isset( self::brands()[ $name ] ) ) {
 			return '';
 		}
 		self::$used[ $name ] = true;
@@ -76,13 +94,18 @@ final class Icons {
 	 * that scripts create at runtime.
 	 */
 	public static function sprite(): void {
-		$paths = self::paths();
-		$names = array_keys( self::$used + array_fill_keys( array( 'search', 'history', 'arrow-up-left', 'close', 'check', 'heart', 'star', 'bag' ), true ) );
+		$paths  = self::paths();
+		$brands = self::brands();
+		$names  = array_keys( self::$used + array_fill_keys( array( 'search', 'history', 'arrow-up-left', 'close', 'check', 'heart', 'star', 'bag' ), true ) );
 
 		echo '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">';
 		foreach ( $names as $name ) {
-			// Static markup defined above; not user input.
-			echo '<symbol id="i-' . esc_attr( $name ) . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' . $paths[ $name ] . '</symbol>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// Static markup defined in this class / generated file; not user input.
+			if ( isset( $brands[ $name ] ) ) {
+				echo '<symbol id="i-' . esc_attr( $name ) . '" viewBox="0 0 24 24" fill="currentColor"><path d="' . esc_attr( $brands[ $name ] ) . '"/></symbol>';
+			} else {
+				echo '<symbol id="i-' . esc_attr( $name ) . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' . $paths[ $name ] . '</symbol>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
 		}
 		echo '</svg>';
 	}

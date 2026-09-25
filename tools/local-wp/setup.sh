@@ -25,6 +25,8 @@ mkdir -p "$SITE/wp-content/plugins" "$SITE/wp-content/themes" "$SITE/wp-content/
 ln -sfn "$SQLITE_SRC" "$SITE/wp-content/plugins/sqlite-database-integration"
 ln -sfn "$WOO_SRC" "$SITE/wp-content/plugins/woocommerce"
 ln -sfn "$ROOT/the360hub" "$SITE/wp-content/themes/the360hub"
+mkdir -p "$SITE/wp-content/mu-plugins"
+cp "$ROOT/tools/local-wp/local-dev.php" "$SITE/wp-content/mu-plugins/"
 
 sed -e "s#{SQLITE_IMPLEMENTATION_FOLDER_PATH}#$SITE/wp-content/plugins/sqlite-database-integration#" \
     -e "s#{SQLITE_PLUGIN}#sqlite-database-integration/load.php#" \

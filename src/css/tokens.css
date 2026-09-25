@@ -1,55 +1,78 @@
 /*
- * Design tokens. The single source of visual values for the theme.
- * Brand colours (primary, secondary, cta and their on-colours) and fonts are
- * overridden at runtime by the Customizer (Core\Assets::token_css()).
+ * Design tokens.
+ *
+ * Layer 1 — palette (--t360-c-*, --t360-on-*): printed by Core\Assets from the
+ * Customizer colour preset + overrides. Defaults below = "Electric blue".
+ * Layer 2 — semantic tokens used by components. Components never use raw hex.
  */
 :root {
-	/* Brand */
-	--t360-primary: #0B1220;
-	--t360-on-primary: #FFFFFF;
-	--t360-secondary: #1D4ED8;
-	--t360-on-secondary: #FFFFFF;
-	--t360-cta: #1238C4;
+	/* Palette (overridden at runtime) */
+	--t360-c-brand: #0B1220;
+	--t360-on-brand: #FFFFFF;
+	--t360-c-cta: #2563EB;
 	--t360-on-cta: #FFFFFF;
-	--t360-cta-hover: color-mix(in srgb, var(--t360-cta) 86%, #000);
-	--t360-focus: var(--t360-secondary);
+	--t360-c-deal: #E11D48;
+	--t360-on-deal: #FFFFFF;
+	--t360-c-highlight: #FACC15;
+	--t360-on-highlight: #0B1220;
+	--t360-c-header: #0B1220;
+	--t360-on-header: #FFFFFF;
+	--t360-c-topbar: #1E293B;
+	--t360-on-topbar: #FFFFFF;
+	--t360-c-footer: #0B1220;
+	--t360-on-footer: #FFFFFF;
+	--t360-c-page: #F2F4F8;
 
-	/* Neutrals */
+	/* Semantic colour */
+	--t360-primary: var(--t360-c-brand);
+	--t360-on-primary: var(--t360-on-brand);
+	--t360-cta: var(--t360-c-cta);
+	--t360-cta-hover: color-mix(in srgb, var(--t360-c-cta) 85%, #000);
+	--t360-cta-soft: color-mix(in srgb, var(--t360-c-cta) 10%, #fff);
+	--t360-secondary: var(--t360-c-cta);
+	--t360-focus: var(--t360-c-cta);
+	--t360-deal: var(--t360-c-deal);
+	--t360-deal-soft: color-mix(in srgb, var(--t360-c-deal) 9%, #fff);
+	--t360-highlight: var(--t360-c-highlight);
+	--t360-page: var(--t360-c-page);
+
 	--t360-text: #0B1220;
 	--t360-text-2: #475467;
-	--t360-text-3: #667085;
+	--t360-text-3: #5D6778;
 	--t360-bg: #FFFFFF;
-	--t360-surface: #F4F6F8;
-	--t360-surface-2: #EAEDF1;
+	--t360-surface: #F4F6F9;
+	--t360-surface-2: #EAEDF2;
 	--t360-border: #E4E7EC;
 	--t360-border-strong: #7D8797;
-
-	/* Semantic */
-	--t360-deal: #C8102E;
-	--t360-deal-soft: #FEF3F2;
 	--t360-save: #067647;
 	--t360-save-soft: #ECFDF3;
 	--t360-warn: #B54708;
 	--t360-star: #F79009;
+	--t360-whatsapp: #25D366;
 
 	/* Type */
 	--t360-font-system: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 	--t360-font-body: var(--t360-font-system);
 	--t360-font-heading: var(--t360-font-system);
+	--t360-heading-weight: 700;
 	--t360-fs-xs: 0.75rem;
 	--t360-fs-sm: 0.875rem;
 	--t360-fs-base: 1rem;
 	--t360-fs-lg: 1.125rem;
 	--t360-fs-xl: 1.25rem;
 	--t360-fs-2xl: 1.5rem;
+	--t360-fs-hero: 1.5rem;
 	--t360-lh: 1.5;
-	--t360-lh-tight: 1.25;
+	--t360-lh-tight: 1.2;
 
-	/* Shape & elevation */
-	--t360-radius-sm: 6px;
-	--t360-radius: 8px;
-	--t360-radius-lg: 12px;
-	--t360-shadow-float: 0 -1px 0 var(--t360-border), 0 8px 24px rgb(11 18 32 / 0.08);
+	/* Shape & elevation (overridden by Customizer) */
+	--t360-radius-sm: 8px;
+	--t360-radius: 16px;
+	--t360-radius-lg: 22px;
+	--t360-radius-btn: 12px;
+	--t360-shadow: 0 1px 2px rgb(16 24 40 / .05), 0 1px 3px rgb(16 24 40 / .06);
+	--t360-shadow-hover: 0 12px 28px rgb(16 24 40 / .12);
+	--t360-shadow-float: 0 8px 24px rgb(11 18 32 / .16);
 
 	/* Motion */
 	--t360-dur-fast: 150ms;
@@ -57,26 +80,35 @@
 	--t360-ease: cubic-bezier(0.2, 0, 0, 1);
 
 	/* Layout */
-	--t360-gutter: 16px;
-	--t360-max: 1320px;
+	--t360-gutter: 12px;
+	--t360-max: 1400px;
+	--t360-section-gap: 12px;
 	--t360-header-h: 56px;
-	--t360-search-h: 52px;
-	--t360-bottom-nav-h: 56px;
+	--t360-search-h: 56px;
+	--t360-bottom-nav-h: 60px;
+	--t360-logo-h: 30px;
+	--t360-logo-h-lg: 40px;
 	--t360-safe-bottom: env(safe-area-inset-bottom, 0px);
 	--t360-safe-top: env(safe-area-inset-top, 0px);
 }
 
 @media (min-width: 640px) {
-	:root { --t360-gutter: 24px; }
+	:root {
+		--t360-gutter: 20px;
+		--t360-section-gap: 16px;
+		--t360-fs-hero: 2rem;
+	}
 }
 
 @media (min-width: 1024px) {
 	:root {
 		--t360-gutter: 32px;
+		--t360-section-gap: 24px;
 		--t360-fs-lg: 1.25rem;
 		--t360-fs-xl: 1.5rem;
 		--t360-fs-2xl: 2rem;
-		--t360-header-h: 72px;
+		--t360-fs-hero: 2.75rem;
+		--t360-header-h: 76px;
 	}
 }
 

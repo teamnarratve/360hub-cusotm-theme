@@ -161,7 +161,3 @@
 		.t360-search__skeleton { animation: none; }
 	}
 }
-
-@keyframes t360-shimmer {
-	to { background-position: -200% 0; }
-}

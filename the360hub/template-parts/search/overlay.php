@@ -50,6 +50,7 @@ $search_url = static function ( string $term ): string {
 			</div>
 			<?php if ( t360_has_wc() ) : ?>
 				<input type="hidden" name="post_type" value="product">
+				<input type="hidden" name="product_cat" value="" data-t360-search-cat disabled>
 			<?php endif; ?>
 		</form>
 

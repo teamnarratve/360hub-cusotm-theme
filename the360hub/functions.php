@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'THE360HUB_VERSION', '0.1.0' );
+define( 'THE360HUB_VERSION', '0.2.0' );
 define( 'THE360HUB_DIR', get_template_directory() );
 define( 'THE360HUB_URI', get_template_directory_uri() );
 

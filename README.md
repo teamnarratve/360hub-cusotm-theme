@@ -36,7 +36,21 @@ node tools/browser-test.mjs http://localhost:8080 screenshots
 
 ## Configuration
 
-Everything visual is configured under **Appearance → Customize → The360Hub theme**:
-brand colors, fonts, header, mobile navigation, search, product cards, homepage
-module order, banners, trust items, footer and performance. Menus: *Mobile menu*,
-*Desktop category bar*, *Footer column 1/2*.
+Everything visual is under **Appearance → Customize**, in four panels:
+
+* **The360Hub: Design:** colour presets, colours, corners, buttons, shadows, fonts, product cards, shop columns
+* **The360Hub: Header, footer & navigation:** top bar, header style, mega menu, bottom nav, WhatsApp, search, footer and social
+* **The360Hub: Homepage:** reorder and show/hide sections, hero slider, promo tiles, flash deals, tabs, spotlights, CTA, trust
+* **The360Hub: Performance:** WebP uploads
+
+Menus: *Mobile menu*, *Desktop category bar*, *Footer column 1/2*. Category and
+brand images (Products → Categories / Brands) feed the category icons, mega
+menu, promo tiles and spotlights automatically.
+
+## Tests
+
+```bash
+npm run check                                   # contrast (all presets), size budgets, PHP lint
+node tools/browser-test.mjs http://localhost:8080 screenshots
+node tools/customizer-test.mjs http://localhost:8080 screenshots
+```

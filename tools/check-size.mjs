@@ -7,6 +7,7 @@ const budgets = [
 	['the360hub/assets/js/core.js', 10 * 1024],
 	['the360hub/assets/js/search.js', 6 * 1024],
 	['the360hub/assets/js/lists.js', 4 * 1024],
+	['the360hub/assets/js/home.js', 4 * 1024],
 ];
 
 let failed = false;

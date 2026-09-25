@@ -11,4 +11,4 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<ul class="t360-grid products">
+<ul class="t360-grid t360-grid--<?php echo (int) t360_setting( 'shop_columns' ); ?> products">

@@ -99,7 +99,7 @@ final class Catalog {
 	 */
 	public static function category_tree(): array {
 		return self::remember(
-			'cat_tree',
+			'cat_tree_v2',
 			static function () {
 				$terms = get_terms(
 					array(
@@ -121,6 +121,7 @@ final class Catalog {
 				$build = static function ( $term ) {
 					return array(
 						'id'    => (int) $term->term_id,
+						'slug'  => $term->slug,
 						'name'  => $term->name,
 						'url'   => get_term_link( $term ),
 						'image' => (int) get_term_meta( $term->term_id, 'thumbnail_id', true ),
@@ -180,24 +181,33 @@ final class Catalog {
 	}
 
 	/**
-	 * Product IDs for a merchandising list (deals, featured, new, trending).
+	 * Product IDs for a merchandising list.
 	 *
-	 * @param string $type  List type.
-	 * @param int    $limit Max products.
+	 * @param string $type     deals | featured | bestsellers (alias trending) | top_rated | new.
+	 * @param int    $limit    Max products.
+	 * @param int    $category Optional product_cat term ID to restrict to (includes children).
 	 * @return int[]
 	 */
-	public static function product_ids( string $type, int $limit ): array {
+	public static function product_ids( string $type, int $limit, int $category = 0 ): array {
 		return self::remember(
-			"ids_{$type}_{$limit}",
-			static function () use ( $type, $limit ) {
+			"ids_{$type}_{$limit}_{$category}",
+			static function () use ( $type, $limit, $category ) {
 				$args = array(
 					'status'     => 'publish',
 					'visibility' => 'catalog',
 					'limit'      => $limit,
 					'return'     => 'ids',
+					'order'      => 'DESC',
 				);
 				if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) ) {
 					$args['stock_status'] = 'instock';
+				}
+				if ( $category ) {
+					$term = get_term( $category, 'product_cat' );
+					if ( ! $term || is_wp_error( $term ) ) {
+						return array();
+					}
+					$args['category'] = array( $term->slug );
 				}
 
 				switch ( $type ) {
@@ -213,18 +223,60 @@ final class Catalog {
 						$args['featured'] = true;
 						$args['orderby']  = 'date';
 						break;
+					case 'bestsellers':
 					case 'trending':
 						$args['orderby']  = 'meta_value_num';
 						$args['meta_key'] = 'total_sales'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- cached.
 						break;
+					case 'top_rated':
+						$args['orderby']  = 'meta_value_num';
+						$args['meta_key'] = '_wc_average_rating'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- cached.
+						break;
 					default: // new.
 						$args['orderby'] = 'date';
 				}
-				$args['order'] = 'DESC';
 
 				return array_map( 'intval', wc_get_products( $args ) );
 			},
 			15 * MINUTE_IN_SECONDS
 		);
+	}
+
+	/**
+	 * Top-level category by term ID, or the Nth top-level category when 0.
+	 *
+	 * @param int $term_id  Chosen term (0 = automatic).
+	 * @param int $fallback Zero-based index into the category tree.
+	 * @return array|null Category node from category_tree().
+	 */
+	public static function category_node( int $term_id, int $fallback ): ?array {
+		$tree = self::category_tree();
+		if ( $term_id ) {
+			foreach ( $tree as $node ) {
+				if ( $node['id'] === $term_id ) {
+					return $node;
+				}
+				foreach ( $node['children'] as $child ) {
+					if ( $child['id'] === $term_id ) {
+						return $child + array( 'children' => array() );
+					}
+				}
+			}
+			$term = get_term( $term_id, 'product_cat' );
+			if ( $term && ! is_wp_error( $term ) ) {
+				return array(
+					'id'       => (int) $term->term_id,
+					'name'     => $term->name,
+					'url'      => get_term_link( $term ),
+					'image'    => (int) get_term_meta( $term->term_id, 'thumbnail_id', true ),
+					'count'    => (int) $term->count,
+					'children' => array(),
+				);
+			}
+			return null;
+		}
+		// Largest categories first for automatic picks.
+		usort( $tree, static fn( $a, $b ) => $b['count'] <=> $a['count'] );
+		return $tree[ $fallback ] ?? null;
 	}
 }

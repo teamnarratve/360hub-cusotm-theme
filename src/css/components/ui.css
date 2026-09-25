@@ -13,7 +13,7 @@
 		padding: 12px 16px;
 		background: var(--t360-primary);
 		color: var(--t360-on-primary);
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-sm);
 	}
 	.t360-skip:focus {
 		top: 8px;
@@ -26,14 +26,21 @@
 		justify-content: center;
 		gap: 8px;
 		min-height: 48px;
-		padding: 0 20px;
+		padding: 0 22px;
 		border: 1px solid transparent;
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-btn);
 		font-weight: 700;
-		font-size: var(--t360-fs-base);
+		font-size: var(--t360-fs-sm);
 		line-height: 1.2;
 		text-align: center;
-		transition: background-color var(--t360-dur-fast) var(--t360-ease), border-color var(--t360-dur-fast) var(--t360-ease);
+		transition: background-color var(--t360-dur-fast) var(--t360-ease), transform var(--t360-dur-fast) var(--t360-ease), box-shadow var(--t360-dur-fast) var(--t360-ease);
+	}
+	.t360-btn .t360-icon {
+		width: 18px;
+		height: 18px;
+	}
+	.t360-btn:active {
+		transform: scale(0.98);
 	}
 	.t360-btn--cta {
 		background: var(--t360-cta);
@@ -43,13 +50,15 @@
 		background: var(--t360-cta-hover);
 	}
 	.t360-btn--light {
-		background: var(--t360-bg);
+		background: #fff;
 		color: var(--t360-text);
+	}
+	.t360-btn--light:hover {
+		box-shadow: var(--t360-shadow-hover);
 	}
 	.t360-btn--sm {
 		min-height: 40px;
 		padding: 0 12px;
-		font-size: var(--t360-fs-sm);
 	}
 	.t360-btn[aria-busy="true"] {
 		opacity: 0.7;
@@ -64,13 +73,13 @@
 		width: 44px;
 		height: 44px;
 		border: 0;
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-sm);
 		background: transparent;
-		color: var(--t360-text);
+		color: inherit;
 		padding: 0;
 	}
 	.t360-iconbtn:hover {
-		background: var(--t360-surface);
+		background: color-mix(in srgb, currentColor 10%, transparent);
 	}
 
 	.t360-link {
@@ -82,22 +91,63 @@
 		font-size: var(--t360-fs-sm);
 	}
 
-	/* Badges ----------------------------------------------------------- */
+	/* Badges & tags ----------------------------------------------------- */
 	.t360-badge {
 		position: absolute;
-		top: 4px;
-		right: 2px;
+		top: -6px;
+		right: -8px;
 		min-width: 18px;
 		height: 18px;
 		padding: 0 5px;
 		border-radius: 9px;
 		background: var(--t360-deal);
-		color: #fff;
+		color: var(--t360-on-deal);
 		font-size: 11px;
-		font-weight: 700;
+		font-weight: 800;
 		line-height: 18px;
 		text-align: center;
 		font-variant-numeric: tabular-nums;
+		box-shadow: 0 0 0 2px var(--t360-c-header);
+	}
+
+	.t360-tag {
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 7px;
+		border-radius: 6px;
+		font-size: 11px;
+		font-weight: 800;
+		line-height: 1.2;
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+	}
+	.t360-tag--deal {
+		background: var(--t360-deal);
+		color: var(--t360-on-deal);
+	}
+	.t360-tag--new {
+		background: var(--t360-primary);
+		color: var(--t360-on-primary);
+	}
+	.t360-tag--hot {
+		background: var(--t360-highlight);
+		color: var(--t360-on-highlight);
+	}
+	.t360-tag--muted {
+		background: var(--t360-surface-2);
+		color: var(--t360-text-2);
+	}
+
+	/* Star rating: one element, masked to five stars, filled by --r. */
+	.t360-stars {
+		--r: 0;
+		display: inline-block;
+		width: 70px;
+		height: 13px;
+		background: linear-gradient(90deg, var(--t360-star) calc(var(--r) / 5 * 100%), var(--t360-surface-2) 0);
+		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.94 5.96 6.56.95-4.75 4.63 1.12 6.53L12 17.49l-5.87 3.08 1.12-6.53L2.5 9.41l6.56-.95z'/%3E%3C/svg%3E") 0 0 / 14px 13px repeat-x;
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5l2.94 5.96 6.56.95-4.75 4.63 1.12 6.53L12 17.49l-5.87 3.08 1.12-6.53L2.5 9.41l6.56-.95z'/%3E%3C/svg%3E") 0 0 / 14px 13px repeat-x;
 	}
 
 	/* Chips ------------------------------------------------------------ */
@@ -125,13 +175,14 @@
 		align-items: center;
 		gap: 6px;
 		min-height: 40px;
-		padding: 0 14px;
+		padding: 0 16px;
 		border: 1px solid var(--t360-border);
 		border-radius: 999px;
 		background: var(--t360-bg);
 		font-size: var(--t360-fs-sm);
 		font-weight: 600;
 		white-space: nowrap;
+		transition: border-color var(--t360-dur-fast) var(--t360-ease), background-color var(--t360-dur-fast) var(--t360-ease);
 	}
 	.t360-chip .t360-icon {
 		width: 16px;
@@ -140,7 +191,8 @@
 	}
 	.t360-chip:hover,
 	.t360-chip[aria-current="page"] {
-		border-color: var(--t360-text);
+		border-color: var(--t360-cta);
+		background: var(--t360-cta-soft);
 	}
 
 	/* Toast ------------------------------------------------------------ */
@@ -158,12 +210,13 @@
 		width: max-content;
 		max-width: calc(100vw - 32px);
 		padding: 12px 16px;
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-sm);
 		background: var(--t360-primary);
 		color: var(--t360-on-primary);
 		font-size: var(--t360-fs-sm);
 		font-weight: 600;
 		box-shadow: var(--t360-shadow-float);
+		animation: t360-rise var(--t360-dur) var(--t360-ease);
 	}
 	.t360-toast a {
 		text-decoration: underline;
@@ -179,14 +232,16 @@
 		display: grid;
 		justify-items: center;
 		gap: 12px;
-		padding: 48px 0;
+		padding: 48px 16px;
+		border-radius: var(--t360-radius);
+		background: var(--t360-bg);
 		text-align: center;
 		color: var(--t360-text-2);
 	}
 	.t360-empty__icon {
-		width: 40px;
-		height: 40px;
-		color: var(--t360-text-3);
+		width: 44px;
+		height: 44px;
+		color: var(--t360-cta);
 	}
 	.t360-empty__title {
 		margin: 0;
@@ -217,6 +272,9 @@
 		color: var(--t360-text-2);
 		padding: 8px 0;
 	}
+	.t360-crumbs a:hover {
+		color: var(--t360-cta);
+	}
 	.t360-crumbs__sep {
 		margin: 0 6px;
 	}
@@ -238,4 +296,8 @@
 	.t360-prose h3 { font-size: var(--t360-fs-lg); margin-top: 1.25em; }
 	.t360-prose ul { list-style: disc; padding-left: 1.25em; }
 	.t360-prose ol { list-style: decimal; padding-left: 1.25em; }
+}
+
+@keyframes t360-rise {
+	from { opacity: 0; transform: translateY(8px); }
 }

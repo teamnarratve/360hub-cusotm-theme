@@ -1,0 +1,11 @@
+.t360-sortable { margin: 8px 0 0; }
+.t360-sortable__item {
+	display: flex; align-items: center; justify-content: space-between; gap: 8px;
+	margin: 0 0 4px; padding: 6px 8px; background: #fff; border: 1px solid #dcdcde; border-radius: 4px;
+}
+.t360-sortable__item label { flex: 1; }
+.t360-sortable__btns { display: flex; gap: 2px; }
+.t360-sortable__btns button { width: 28px; height: 28px; text-decoration: none; }
+.t360-range { display: flex; align-items: center; gap: 10px; }
+.t360-range input { flex: 1; }
+.t360-range output { min-width: 3em; text-align: right; font-variant-numeric: tabular-nums; }

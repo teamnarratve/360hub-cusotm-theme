@@ -2,36 +2,32 @@
 /**
  * Site header.
  *
- * Mobile: [menu] [logo] ........ [wishlist] [cart]
- *         [ search field (opens the search overlay) ]
- * ≥lg:    [logo] [ search field ] [account] [wishlist] [cart]
- *         [ category bar ]
+ * Mobile: [menu] [logo] ............ [account] [cart]
+ *         [ search field → opens the search overlay ]
+ * ≥lg:    [logo] [ category ▾ | search ] [account] [wishlist] [cart]
+ *         [ ☰ All categories (mega menu) | categories … | Hot deals ]
  *
  * @package The360Hub
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$notice       = (string) t360_setting( 'header_notice' );
-$notice_url   = (string) t360_setting( 'header_notice_url' );
 $wishlist_url = t360_wishlist_url();
 $has_wc       = t360_has_wc();
 $cart_count   = t360_cart_count();
 $placeholder  = (string) t360_setting( 'header_search_ph' );
-?>
-<?php if ( $notice ) : ?>
-	<div class="t360-notice">
-		<?php if ( $notice_url ) : ?>
-			<a href="<?php echo esc_url( $notice_url ); ?>"><?php echo esc_html( $notice ); ?></a>
-		<?php else : ?>
-			<p><?php echo esc_html( $notice ); ?></p>
-		<?php endif; ?>
-	</div>
-<?php endif; ?>
+$labels       = (bool) t360_setting( 'header_account_label' );
+$classes      = array(
+	't360-header',
+	't360-header--' . sanitize_html_class( (string) t360_setting( 'header_style' ) ),
+	t360_setting( 'header_sticky' ) ? 'is-sticky' : '',
+);
 
-<header class="t360-header" data-t360-header <?php echo t360_setting( 'header_hide_scroll' ) ? 'data-t360-condense' : ''; ?>>
+get_template_part( 'template-parts/header/topbar' );
+?>
+<header class="<?php echo esc_attr( implode( ' ', array_filter( $classes ) ) ); ?>" data-t360-header <?php echo t360_setting( 'header_hide_scroll' ) && t360_setting( 'header_sticky' ) ? 'data-t360-condense' : ''; ?>>
 	<div class="t360-header__bar t360-container">
-		<a class="t360-iconbtn lg:hidden" href="<?php echo esc_url( $has_wc ? get_permalink( wc_get_page_id( 'shop' ) ) : home_url( '/' ) ); ?>" data-t360-open="t360-drawer" aria-haspopup="dialog" aria-controls="t360-drawer">
+		<a class="t360-iconbtn t360-header__menu" href="<?php echo esc_url( $has_wc ? get_permalink( wc_get_page_id( 'shop' ) ) : home_url( '/' ) ); ?>" data-t360-open="t360-drawer" aria-haspopup="dialog" aria-controls="t360-drawer">
 			<?php t360_the_icon( 'menu' ); ?>
 			<span class="screen-reader-text"><?php esc_html_e( 'Menu', 'the360hub' ); ?></span>
 		</a>
@@ -49,6 +45,7 @@ $placeholder  = (string) t360_setting( 'header_search_ph' );
 				array(
 					'id'          => 'lg',
 					'placeholder' => $placeholder,
+					'categories'  => true,
 				)
 			);
 			?>
@@ -56,29 +53,39 @@ $placeholder  = (string) t360_setting( 'header_search_ph' );
 
 		<nav class="t360-header__actions" aria-label="<?php esc_attr_e( 'Shortcuts', 'the360hub' ); ?>">
 			<?php if ( $has_wc ) : ?>
-				<a class="t360-iconbtn max-lg:hidden" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>">
+				<a class="t360-hbtn" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>">
 					<?php t360_the_icon( 'user' ); ?>
-					<span class="screen-reader-text"><?php esc_html_e( 'Account', 'the360hub' ); ?></span>
+					<span class="<?php echo $labels ? 't360-hbtn__label' : 'screen-reader-text'; ?>">
+						<?php if ( is_user_logged_in() ) : ?>
+							<?php esc_html_e( 'Account', 'the360hub' ); ?>
+						<?php else : ?>
+							<small><?php esc_html_e( 'Hello,', 'the360hub' ); ?></small> <?php esc_html_e( 'Sign in', 'the360hub' ); ?>
+						<?php endif; ?>
+					</span>
 				</a>
 			<?php endif; ?>
 			<?php if ( $wishlist_url ) : ?>
-				<a class="t360-iconbtn" href="<?php echo esc_url( $wishlist_url ); ?>">
-					<?php t360_the_icon( 'heart' ); ?>
-					<span class="screen-reader-text"><?php esc_html_e( 'Wishlist', 'the360hub' ); ?></span>
-					<span class="t360-badge" data-t360-wish-count hidden></span>
+				<a class="t360-hbtn t360-hbtn--wish" href="<?php echo esc_url( $wishlist_url ); ?>">
+					<span class="t360-hbtn__icon">
+						<?php t360_the_icon( 'heart' ); ?>
+						<span class="t360-badge" data-t360-wish-count hidden></span>
+					</span>
+					<span class="<?php echo $labels ? 't360-hbtn__label' : 'screen-reader-text'; ?>"><?php esc_html_e( 'Wishlist', 'the360hub' ); ?></span>
 				</a>
 			<?php endif; ?>
 			<?php if ( $has_wc ) : ?>
-				<a class="t360-iconbtn" href="<?php echo esc_url( wc_get_cart_url() ); ?>">
-					<?php t360_the_icon( 'bag' ); ?>
-					<span class="screen-reader-text"><?php esc_html_e( 'Cart', 'the360hub' ); ?></span>
-					<span class="t360-badge" data-t360-cart-count <?php echo $cart_count ? '' : 'hidden'; ?>><?php echo esc_html( (string) $cart_count ); ?><span class="screen-reader-text"> <?php esc_html_e( 'items', 'the360hub' ); ?></span></span>
+				<a class="t360-hbtn t360-hbtn--cart" href="<?php echo esc_url( wc_get_cart_url() ); ?>">
+					<span class="t360-hbtn__icon">
+						<?php t360_the_icon( 'bag' ); ?>
+						<span class="t360-badge" data-t360-cart-count <?php echo $cart_count ? '' : 'hidden'; ?>><?php echo esc_html( (string) $cart_count ); ?><span class="screen-reader-text"> <?php esc_html_e( 'items', 'the360hub' ); ?></span></span>
+					</span>
+					<span class="<?php echo $labels ? 't360-hbtn__label' : 'screen-reader-text'; ?>"><?php esc_html_e( 'Cart', 'the360hub' ); ?></span>
 				</a>
 			<?php endif; ?>
 		</nav>
 	</div>
 
-	<div class="t360-header__search t360-container lg:hidden">
+	<div class="t360-header__search t360-container">
 		<?php
 		get_template_part(
 			'template-parts/search/form',

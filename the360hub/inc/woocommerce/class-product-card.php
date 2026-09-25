@@ -26,18 +26,44 @@ final class Product_Card {
 	public static function data( WC_Product $product ): array {
 		$pricing = self::pricing( $product );
 
+		$gallery  = $product->get_gallery_image_ids();
+		$new_days = (int) t360_setting( 'card_new_days' );
+		$created  = $product->get_date_created();
+		$free_min = (int) t360_setting( 'card_free_delivery' );
+
 		return array(
-			'id'          => $product->get_id(),
-			'name'        => $product->get_name(),
-			'url'         => $product->get_permalink(),
-			'image_id'    => (int) $product->get_image_id(),
-			'brand'       => t360_setting( 'card_brand' ) ? Catalog::product_brand( $product->get_id() ) : '',
-			'rating'      => (float) $product->get_average_rating(),
-			'reviews'     => (int) $product->get_review_count(),
-			'pricing'     => $pricing,
-			'stock'       => self::stock( $product ),
-			'add_to_cart' => self::add_to_cart( $product ),
+			'id'           => $product->get_id(),
+			'name'         => $product->get_name(),
+			'url'          => $product->get_permalink(),
+			'image_id'     => (int) $product->get_image_id(),
+			'alt_image_id' => ( t360_setting( 'card_hover_image' ) && $gallery ) ? (int) $gallery[0] : 0,
+			'brand'        => t360_setting( 'card_brand' ) ? Catalog::product_brand( $product->get_id() ) : '',
+			'rating'       => t360_setting( 'card_rating' ) ? (float) $product->get_average_rating() : 0.0,
+			'reviews'      => t360_setting( 'card_rating' ) ? (int) $product->get_review_count() : 0,
+			'is_new'       => $new_days > 0 && $created && $created->getTimestamp() > time() - $new_days * DAY_IN_SECONDS,
+			'is_featured'  => $product->is_featured(),
+			'free_ship'    => $free_min > 0 && $pricing['now'] >= $free_min,
+			'installment'  => self::installment( $pricing['now'] ),
+			'pricing'      => $pricing,
+			'stock'        => self::stock( $product ),
+			'add_to_cart'  => self::add_to_cart( $product ),
 		);
+	}
+
+	/**
+	 * Instalment line ("or 4 payments of AED 250"), when enabled.
+	 *
+	 * @param float $price Current display price.
+	 */
+	public static function installment( float $price ): string {
+		$count = (int) t360_setting( 'card_installments_n' );
+		if ( ! t360_setting( 'card_installments' ) || $price <= 0 || $count < 2 ) {
+			return '';
+		}
+		$amount = wp_strip_all_tags( wc_price( $price / $count ) );
+		// str_replace, not sprintf: the template is admin-edited text and a stray
+		// "%" must not break the page.
+		return str_replace( '%s', html_entity_decode( $amount, ENT_QUOTES, 'UTF-8' ), (string) t360_setting( 'card_installments_text' ) );
 	}
 
 	/**
@@ -152,7 +178,7 @@ final class Product_Card {
 	 * @return array{ajax:bool, url:string, label:string}|null
 	 */
 	public static function add_to_cart( WC_Product $product ): ?array {
-		if ( ! t360_setting( 'card_add_to_cart' ) || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
+		if ( 'none' === t360_setting( 'card_add_to_cart' ) || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
 			return null;
 		}
 		$ajax = $product->is_type( 'simple' ) && $product->supports( 'ajax_add_to_cart' );
@@ -160,7 +186,7 @@ final class Product_Card {
 		return array(
 			'ajax'  => $ajax,
 			'url'   => $ajax ? $product->add_to_cart_url() : $product->get_permalink(),
-			'label' => $ajax ? __( 'Add to cart', 'the360hub' ) : __( 'Choose options', 'the360hub' ),
+			'label' => $ajax ? __( 'Add to cart', 'the360hub' ) : __( 'See options', 'the360hub' ),
 		);
 	}
 
@@ -216,5 +242,33 @@ final class Product_Card {
 			++$i;
 		}
 		wp_reset_postdata();
+	}
+
+	/**
+	 * Compact product data for hero slides and tiles.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array|null
+	 */
+	public static function teaser( int $product_id ): ?array {
+		$product = $product_id ? wc_get_product( $product_id ) : null;
+		if ( ! $product || ! $product->is_visible() ) {
+			return null;
+		}
+		$pricing = self::pricing( $product );
+		$price   = $pricing['now'] > 0 ? html_entity_decode( wp_strip_all_tags( wc_price( $pricing['now'] ) ), ENT_QUOTES, 'UTF-8' ) : '';
+		$was     = $pricing['was'] > 0 ? html_entity_decode( wp_strip_all_tags( wc_price( $pricing['was'] ) ), ENT_QUOTES, 'UTF-8' ) : '';
+
+		return array(
+			'id'       => $product->get_id(),
+			'name'     => $product->get_name(),
+			'brand'    => Catalog::product_brand( $product->get_id() ),
+			'url'      => $product->get_permalink(),
+			'image_id' => (int) $product->get_image_id(),
+			/* translators: %s: price */
+			'price'    => $pricing['from'] && $price ? sprintf( __( 'From %s', 'the360hub' ), $price ) : $price,
+			'was'      => $was,
+			'percent'  => (int) $pricing['percent'],
+		);
 	}
 }

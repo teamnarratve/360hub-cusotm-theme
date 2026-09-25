@@ -25,7 +25,7 @@ $heading_id = 't360-sec-' . $args['key'];
 			)
 		);
 		?>
-		<ul class="t360-brands">
+		<ul class="t360-brands<?php echo t360_setting( 'brands_grayscale' ) ? ' is-gray' : ''; ?>">
 			<?php foreach ( $brands as $brand ) : ?>
 				<li>
 					<a class="t360-brands__item" href="<?php echo esc_url( $brand['url'] ); ?>">

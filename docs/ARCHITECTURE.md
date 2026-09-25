@@ -370,3 +370,46 @@ Deviations from the plan above:
 * WebP conversion applies to JPEG uploads only. GD cannot convert palette PNGs.
 * The single product page uses WooCommerce's default template inside the theme
   shell until phase 3.
+
+---
+
+## Design v2: gadget-store redesign
+
+Design direction came from the ui-ux-pro-max skill. The **Bento Grid** style (verified
+match) drives the hero and promo tiles. The **E-commerce** product profile
+("Vibrant & Block-based", brand primary + success green) sets bolder colour blocks
+on a grey page with white cards. The skill's rule `auto-rotation-controls` applies to
+the slider: it pauses on hover and focus, never autoplays under reduced motion, and
+always shows a pause button. Its palette and font suggestions for this query were
+off-target (pharmacy green, editorial serif), so colours and fonts are selectable
+presets instead. Every preset is contrast-checked in `tools/check-presets.php`.
+
+### Homepage modules (reorderable in the Customizer)
+
+| Module | Notes |
+|---|---|
+| Hero | Slider, plus a "Deal of the day" and a "Just launched" product tile. Slides build themselves from featured products (brand, name, price, photo) unless a banner image is uploaded. |
+| Category icons | Circles or tiles. |
+| Flash deals | Dark band with a countdown (daily reset or fixed end date; hides after the end date). |
+| Promo tiles | Bento grid, defaults to top categories. |
+| Product tabs | Featured / Best sellers / New / Top rated / On sale. Tabs after the first load on demand. |
+| Category spotlight ×2 | Category banner plus that category's best sellers. |
+| Brands, New arrivals, Hot deals, Featured, Best sellers, Top rated rows, CTA banner, Trust, Recently viewed | — |
+
+### Customizer panels
+
+* **Design:** colour preset (6) plus 8 colour overrides with live preview; corner style;
+  button shape; shadows; content width; animations; font pairing (5 + system);
+  text size; heading weight; product card style, image shape/fit, hover image,
+  add-to-cart style, badges, free-delivery label, instalments; shop columns.
+* **Header, footer & navigation:** top bar and links; header style (dark, light or
+  accent); sticky and condense behaviour; logo sizes; mega menu; highlighted nav
+  link; bottom nav; floating WhatsApp; popular searches; footer style, social
+  links, newsletter shortcode, payments.
+* **Homepage:** section order and visibility, hero slides and side tiles, promo
+  tiles, flash deals, tabs, spotlights, CTA banner, trust items, titles.
+
+### Weight
+
+The theme zip is still well under 1MB. A visitor downloads about 12KB of CSS and
+2.6KB of JS (plus 1.5KB on the homepage), all gzipped, plus one font pairing.

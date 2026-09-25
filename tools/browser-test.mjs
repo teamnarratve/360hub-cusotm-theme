@@ -20,6 +20,17 @@ const check = (name, ok, detail = '') => {
 	console.log(`${ok ? 'ok  ' : 'FAIL'} ${name}${detail ? ' — ' + detail : ''}`);
 };
 
+async function loadAll(p) {
+	await p.evaluate(async () => {
+		for (let y = 0; y < document.body.scrollHeight; y += 600) {
+			window.scrollTo(0, y);
+			await new Promise((r) => setTimeout(r, 60));
+		}
+		window.scrollTo(0, 0);
+	});
+	await p.waitForTimeout(500);
+}
+
 async function page(viewport, mobile) {
 	const ctx = await browser.newContext({ viewport, deviceScaleFactor: 2, isMobile: mobile, hasTouch: mobile });
 	// WooCommerce built from source ships no minified JS (release zips do);
@@ -45,6 +56,7 @@ async function page(viewport, mobile) {
 	const { ctx, p, errors } = await page({ width: 360, height: 740 }, true);
 	await p.goto(base + '/', { waitUntil: 'networkidle' });
 	await p.screenshot({ path: `${out}/m-home.png` });
+	await loadAll(p);
 	await p.screenshot({ path: `${out}/m-home-full.png`, fullPage: true });
 
 	const overflow = await p.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
@@ -60,6 +72,32 @@ async function page(viewport, mobile) {
 			.map((el) => `${el.className} ${Math.round(el.getBoundingClientRect().width)}x${Math.round(el.getBoundingClientRect().height)}`)
 	);
 	check('mobile: header/nav/card controls ≥40px', smallTargets.length === 0, smallTargets.join(', '));
+
+	// Hero slider.
+	check('hero slider rendered', (await p.locator('[data-t360-slider] .t360-slide').count()) > 1);
+	await p.locator('[data-t360-slider-next]').click();
+	await p.waitForTimeout(800);
+	check('slider next moves to slide 2', (await p.locator('[data-t360-slider-dot="1"]').getAttribute('aria-current')) === 'true');
+	check('slider autoplay paused after interaction', (await p.locator('[data-t360-slider-pause]').getAttribute('aria-pressed')) === 'true');
+
+	// Countdown ticks.
+	const t1 = await p.locator('[data-t360-countdown] [data-unit="s"]').innerText();
+	await p.waitForTimeout(1200);
+	const t2 = await p.locator('[data-t360-countdown] [data-unit="s"]').innerText();
+	check('flash deal countdown ticks', t1 !== t2, `${t1} → ${t2}`);
+
+	// Product tabs load other panels on demand.
+	const tab2 = p.locator('[data-t360-tabs] [role="tab"]').nth(1);
+	await tab2.scrollIntoViewIfNeeded();
+	await tab2.click();
+	const panelId = await tab2.getAttribute('aria-controls');
+	await p.waitForSelector(`#${panelId} .t360-card`, { timeout: 5000 });
+	check('product tab switch loads cards', (await p.locator(`#${panelId} .t360-card`).count()) > 0);
+	await p.keyboard.press('ArrowRight');
+	check('tabs arrow-key navigation', (await p.locator('[data-t360-tabs] [role="tab"]').nth(2).getAttribute('aria-selected')) === 'true');
+	await p.evaluate(() => window.scrollTo(0, 0));
+
+	check('floating WhatsApp button shown', (await p.locator('.t360-wafloat').count()) === 1);
 
 	// Drawer.
 	await p.click('.t360-header [data-t360-open="t360-drawer"]');
@@ -133,10 +171,11 @@ async function page(viewport, mobile) {
 }
 
 // Tablet / desktop -----------------------------------------------------
-for (const [name, vp, expectCols] of [['t', { width: 768, height: 1024 }, 3], ['d', { width: 1100, height: 800 }, 4], ['w', { width: 1440, height: 900 }, 5]]) {
+for (const [name, vp, expectCols] of [['t', { width: 768, height: 1024 }, 3], ['d', { width: 1100, height: 800 }, 4], ['w', { width: 1440, height: 900 }, 4]]) {
 	const { ctx, p, errors } = await page(vp, false);
 	await p.goto(base + '/', { waitUntil: 'networkidle' });
 	await p.screenshot({ path: `${out}/${name}-home.png` });
+	await loadAll(p);
 	await p.screenshot({ path: `${out}/${name}-home-full.png`, fullPage: true });
 	await p.goto(base + '/shop/', { waitUntil: 'networkidle' });
 	await p.screenshot({ path: `${out}/${name}-shop.png` });
@@ -145,6 +184,19 @@ for (const [name, vp, expectCols] of [['t', { width: 768, height: 1024 }, 3], ['
 	const bottomNav = await p.evaluate(() => getComputedStyle(document.querySelector('.t360-bottomnav')).display);
 	check(`${vp.width}px bottom nav ${vp.width >= 1024 ? 'hidden' : 'shown'}`, (bottomNav === 'none') === vp.width >= 1024);
 	if (vp.width >= 1024) {
+		await p.goto(base + '/', { waitUntil: 'networkidle' });
+		await p.hover('.t360-mega__toggle');
+		await p.waitForTimeout(400);
+		check(`${vp.width}px mega menu opens on hover`, await p.locator('#t360-mega-panel').isVisible());
+		await p.screenshot({ path: `${out}/${name}-mega.png` });
+		await p.mouse.move(5, 700);
+		await p.waitForTimeout(200);
+		const card = p.locator('.t360-card.has-alt').first();
+		await card.scrollIntoViewIfNeeded();
+		await card.hover();
+		await p.waitForTimeout(700);
+		check(`${vp.width}px hover image swaps in`, await card.evaluate((el) => el.classList.contains('alt-ready')));
+		await p.evaluate(() => window.scrollTo(0, 0));
 		await p.click('.t360-header__search-lg input');
 		await p.keyboard.type('arcadia');
 		await p.waitForSelector('.t360-search__product', { timeout: 5000 });

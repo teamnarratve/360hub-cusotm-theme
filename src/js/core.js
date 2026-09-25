@@ -127,11 +127,18 @@ function initHeader() {
 /* Search trigger ---------------------------------------------------------- */
 
 let searchLoaded = false;
-function openSearch(value) {
+function openSearch(value, fromForm) {
 	const dialog = document.getElementById('t360-search');
 	if (!dialog) return false;
 	const input = $('#t360-search-input', dialog);
 	if (typeof value === 'string') input.value = value;
+	// Carry the desktop category picker's choice into the overlay form.
+	const catField = $('[data-t360-search-cat]', dialog);
+	const catSelect = fromForm && $('select[name="product_cat"]', fromForm);
+	if (catField) {
+		catField.value = catSelect ? catSelect.value : '';
+		catField.disabled = !catField.value;
+	}
 	if (!openSheet('t360-search')) return false;
 	input.focus();
 	if (!searchLoaded && cfg.searchJs) {
@@ -149,13 +156,13 @@ function initSearchTriggers() {
 		const input = $('input[type="search"]', form);
 		// Tap/click: open the overlay (inside the user gesture so the keyboard opens on iOS).
 		input.addEventListener('click', () => {
-			if (openSearch(input.value)) input.blur();
+			if (openSearch(input.value, form)) input.blur();
 		});
 		// Keyboard users who start typing in the header field are moved across too.
 		input.addEventListener('input', () => {
 			const value = input.value;
 			input.value = '';
-			openSearch(value);
+			openSearch(value, form);
 		});
 	});
 }
@@ -322,6 +329,74 @@ function initFooter() {
 	mq.addEventListener('change', apply);
 }
 
+/* Mega menu (desktop) -------------------------------------------------------- */
+
+function initMegaMenu() {
+	const mega = $('[data-t360-mega]');
+	if (!mega) return;
+	const toggle = $('.t360-mega__toggle', mega);
+	const panel = $('.t360-mega__panel', mega);
+	let hoverTimer = 0;
+
+	const set = (open) => {
+		toggle.setAttribute('aria-expanded', String(open));
+		panel.hidden = !open;
+	};
+	toggle.addEventListener('click', () => set(panel.hidden));
+	// Hover-capable pointers open on hover (with a small delay against drive-bys).
+	if (window.matchMedia('(hover: hover)').matches) {
+		mega.addEventListener('mouseenter', () => {
+			hoverTimer = setTimeout(() => set(true), 120);
+		});
+		mega.addEventListener('mouseleave', () => {
+			clearTimeout(hoverTimer);
+			set(false);
+		});
+	}
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && !panel.hidden) {
+			set(false);
+			toggle.focus();
+		}
+	});
+	document.addEventListener('click', (e) => {
+		if (!panel.hidden && !mega.contains(e.target)) set(false);
+	});
+	mega.addEventListener('focusout', (e) => {
+		if (!mega.contains(e.relatedTarget)) set(false);
+	});
+}
+
+/* Card hover image (desktop only; loaded on first hover) ---------------------- */
+
+function initHoverImages() {
+	if (!window.matchMedia('(hover: hover)').matches) return;
+	document.addEventListener(
+		'pointerover',
+		(e) => {
+			// The stretched title link covers the card, so start from the card.
+			const card = e.target.closest && e.target.closest('.t360-card');
+			const media = card && card.querySelector('[data-t360-alt-src]');
+			if (!media) return;
+			const img = document.createElement('img');
+			img.className = 't360-card__img t360-card__img--alt';
+			img.alt = '';
+			img.decoding = 'async';
+			img.sizes = '(min-width: 1400px) 260px, 22vw';
+			img.srcset = media.getAttribute('data-t360-alt-srcset') || '';
+			img.src = media.getAttribute('data-t360-alt-src');
+			media.removeAttribute('data-t360-alt-src');
+			img.addEventListener('load', () => {
+				const card = media.closest('.t360-card');
+				if (card) card.classList.add('alt-ready');
+			});
+			const first = $('.t360-card__img', media);
+			if (first) first.after(img);
+		},
+		{ passive: true }
+	);
+}
+
 /* Boot -------------------------------------------------------------------- */
 
 window.t360 = Object.assign(cfg, {
@@ -334,5 +409,7 @@ initSearchTriggers();
 initAddToCart();
 initWishlist();
 initFooter();
+initMegaMenu();
+initHoverImages();
 recordRecentlyViewed();
 syncCart();

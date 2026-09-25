@@ -14,7 +14,7 @@
 
 	body {
 		margin: 0;
-		background: var(--t360-bg);
+		background: var(--t360-page);
 		color: var(--t360-text);
 		font-family: var(--t360-font-body);
 		font-size: var(--t360-fs-base);
@@ -35,7 +35,8 @@
 	h1, h2, h3, h4 {
 		font-family: var(--t360-font-heading);
 		line-height: var(--t360-lh-tight);
-		font-weight: 600;
+		font-weight: var(--t360-heading-weight);
+		letter-spacing: -0.01em;
 		color: var(--t360-text);
 		text-wrap: balance;
 	}
@@ -94,5 +95,13 @@
 
 	[hidden] {
 		display: none !important;
+	}
+
+	/* "Hover and entrance animations" off in the Customizer. */
+	.no-anim *,
+	.no-anim *::before,
+	.no-anim *::after {
+		transition-duration: 0ms !important;
+		animation-duration: 0ms !important;
 	}
 }

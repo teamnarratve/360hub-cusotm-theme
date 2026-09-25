@@ -12,6 +12,7 @@
 	.t360-archive__title {
 		margin: 0;
 		font-size: var(--t360-fs-2xl);
+		letter-spacing: -0.02em;
 	}
 	.t360-archive__count {
 		margin: 0;
@@ -32,16 +33,18 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 8px;
-		margin: 0 calc(var(--t360-gutter) * -1) 16px;
+		margin: 0 calc(var(--t360-gutter) * -1) 12px;
 		padding: 8px var(--t360-gutter);
-		background: var(--t360-bg);
-		border-bottom: 1px solid var(--t360-border);
+		background: var(--t360-page);
 	}
 	@media (min-width: 1024px) {
 		.t360-toolbar {
 			position: static;
 			margin: 0 0 20px;
-			padding: 0 0 12px;
+			padding: 10px 10px 10px 18px;
+			border-radius: var(--t360-radius);
+			background: var(--t360-bg);
+			box-shadow: var(--t360-shadow);
 		}
 	}
 	.t360-toolbar .woocommerce-ordering {
@@ -52,7 +55,7 @@
 		min-height: 40px;
 		padding: 0 36px 0 12px;
 		border: 1px solid var(--t360-border-strong);
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-btn);
 		background: var(--t360-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23475467' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
 		color: var(--t360-text);
 		font-size: var(--t360-fs-sm);
@@ -83,8 +86,9 @@
 		min-width: 44px;
 		height: 44px;
 		padding: 0 8px;
-		border: 1px solid var(--t360-border);
-		border-radius: var(--t360-radius);
+		border-radius: var(--t360-radius-btn);
+		background: var(--t360-bg);
+		box-shadow: var(--t360-shadow);
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
 	}
@@ -101,8 +105,9 @@
 
 	.t360-archive__desc {
 		margin-top: 40px;
-		padding-top: 24px;
-		border-top: 1px solid var(--t360-border);
+		padding: 24px;
+		border-radius: var(--t360-radius);
+		background: var(--t360-bg);
 		font-size: var(--t360-fs-sm);
 	}
 

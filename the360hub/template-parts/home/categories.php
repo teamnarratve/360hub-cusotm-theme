@@ -1,6 +1,6 @@
 <?php
 /**
- * Shop by category: image tiles for top-level departments.
+ * Category icons: circles or tiles, scrollable on mobile.
  *
  * @package The360Hub
  */
@@ -12,6 +12,7 @@ if ( ! $tree ) {
 	return;
 }
 $heading_id = 't360-sec-' . $args['key'];
+$style      = 'tile' === t360_setting( 'categories_style' ) ? 'tile' : 'circle';
 ?>
 <section class="t360-section" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
 	<div class="t360-container">
@@ -20,34 +21,35 @@ $heading_id = 't360-sec-' . $args['key'];
 			'template-parts/components/section-header',
 			null,
 			array(
-				'title' => (string) t360_setting( 'category_grid_title' ),
+				'title' => (string) t360_setting( 'categories_title' ),
 				'id'    => $heading_id,
+				'url'   => get_permalink( wc_get_page_id( 'shop' ) ),
 			)
 		);
 		?>
-		<ul class="t360-catgrid">
-			<?php foreach ( array_slice( $tree, 0, 12 ) as $category ) : ?>
+		<ul class="t360-cats t360-cats--<?php echo esc_attr( $style ); ?>">
+			<?php foreach ( $tree as $category ) : ?>
 				<li>
-					<a class="t360-catgrid__item" href="<?php echo esc_url( $category['url'] ); ?>">
-						<span class="t360-catgrid__media">
+					<a class="t360-cats__item" href="<?php echo esc_url( $category['url'] ); ?>">
+						<span class="t360-cats__media">
 							<?php if ( $category['image'] ) : ?>
 								<?php
 								echo wp_get_attachment_image(
 									$category['image'],
-									'woocommerce_thumbnail',
+									't360-tile',
 									false,
 									array(
 										'alt'     => '',
-										'sizes'   => '(min-width: 1024px) 200px, 30vw',
+										'sizes'   => '(min-width: 1024px) 96px, 72px',
 										'loading' => 'lazy',
 									)
 								);
 								?>
 							<?php else : ?>
-								<span class="t360-catgrid__initial" aria-hidden="true"><?php echo esc_html( mb_substr( $category['name'], 0, 1 ) ); ?></span>
+								<span class="t360-cats__initial" aria-hidden="true"><?php echo esc_html( mb_substr( $category['name'], 0, 1 ) ); ?></span>
 							<?php endif; ?>
 						</span>
-						<span class="t360-catgrid__label"><?php echo esc_html( $category['name'] ); ?></span>
+						<span class="t360-cats__label"><?php echo esc_html( $category['name'] ); ?></span>
 					</a>
 				</li>
 			<?php endforeach; ?>
