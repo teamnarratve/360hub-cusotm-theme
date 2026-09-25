@@ -9,7 +9,8 @@
     "build": "npm run build:fonts && npm run build:css && npm run build:js",
     "watch:css": "tailwindcss -i src/css/app.css -o the360hub/assets/css/app.css --watch",
     "check": "node tools/check-contrast.mjs && node tools/check-size.mjs && npm run lint:php",
-    "lint:php": "find the360hub -name '*.php' -print0 | xargs -0 -n1 php -l | grep -v '^No syntax errors' || true"
+    "lint:php": "find the360hub -name '*.php' -print0 | xargs -0 -n1 php -l | grep -v '^No syntax errors' || true",
+    "package": "npm run build && mkdir -p dist && rm -f dist/the360hub.zip && zip -rq -X dist/the360hub.zip the360hub -x '*.DS_Store'"
   },
   "devDependencies": {
     "@fontsource-variable/nunito-sans": "^5.3.0",

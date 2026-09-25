@@ -4,8 +4,11 @@ Mobile-first WordPress + WooCommerce theme for The360Hub (UAE electronics).
 Architecture, design tokens and roadmap: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 The deployable theme is the [`the360hub/`](the360hub) folder. Built CSS/JS/fonts are
-committed, so deploying doesn't need Node: zip that folder or copy it to
-`wp-content/themes/`.
+committed, so deploying doesn't need Node.
+
+Install: `npm run package` creates `dist/the360hub.zip`; upload it in
+**Appearance → Themes → Add New → Upload Theme**, then activate. Or copy the
+`the360hub/` folder to `wp-content/themes/`.
 
 ## Develop
 
