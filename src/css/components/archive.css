@@ -1,0 +1,153 @@
+@layer components {
+	.t360-archive {
+		padding-bottom: 40px;
+	}
+	.t360-archive__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 4px 12px;
+		margin: 8px 0 12px;
+	}
+	.t360-archive__title {
+		margin: 0;
+		font-size: var(--t360-fs-2xl);
+	}
+	.t360-archive__count {
+		margin: 0;
+		font-size: var(--t360-fs-sm);
+		color: var(--t360-text-3);
+	}
+
+	.t360-subcats {
+		margin-bottom: 4px;
+	}
+
+	/* Sticky toolbar: sort now, filters in phase 2. Sits under the pinned search bar. */
+	.t360-toolbar {
+		position: sticky;
+		top: calc(var(--t360-search-h) + var(--t360-safe-top));
+		z-index: 30;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		margin: 0 calc(var(--t360-gutter) * -1) 16px;
+		padding: 8px var(--t360-gutter);
+		background: var(--t360-bg);
+		border-bottom: 1px solid var(--t360-border);
+	}
+	@media (min-width: 1024px) {
+		.t360-toolbar {
+			position: static;
+			margin: 0 0 20px;
+			padding: 0 0 12px;
+		}
+	}
+	.t360-toolbar .woocommerce-ordering {
+		margin: 0;
+	}
+	.t360-toolbar select {
+		max-width: 60vw;
+		min-height: 40px;
+		padding: 0 36px 0 12px;
+		border: 1px solid var(--t360-border-strong);
+		border-radius: var(--t360-radius);
+		background: var(--t360-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23475467' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+		color: var(--t360-text);
+		font-size: var(--t360-fs-sm);
+		font-weight: 600;
+		appearance: none;
+	}
+
+	/* Pagination (WooCommerce + posts) ----------------------------------- */
+	.woocommerce-pagination,
+	.t360-pagination {
+		margin-top: 32px;
+	}
+	.woocommerce-pagination ul.page-numbers,
+	.t360-pagination .nav-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 6px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.woocommerce-pagination .page-numbers:not(ul),
+	.t360-pagination .page-numbers {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 44px;
+		height: 44px;
+		padding: 0 8px;
+		border: 1px solid var(--t360-border);
+		border-radius: var(--t360-radius);
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+	.woocommerce-pagination .page-numbers.current,
+	.t360-pagination .page-numbers.current {
+		background: var(--t360-primary);
+		border-color: var(--t360-primary);
+		color: var(--t360-on-primary);
+	}
+	.woocommerce-pagination .page-numbers.dots,
+	.t360-pagination .page-numbers.dots {
+		border-color: transparent;
+	}
+
+	.t360-archive__desc {
+		margin-top: 40px;
+		padding-top: 24px;
+		border-top: 1px solid var(--t360-border);
+		font-size: var(--t360-fs-sm);
+	}
+
+	/* WooCommerce notices (theme replaces WooCommerce CSS on catalogue pages) */
+	.woocommerce-notices-wrapper:empty {
+		display: none;
+	}
+	.woocommerce-message,
+	.woocommerce-info,
+	.woocommerce-error,
+	.woocommerce-no-products-found .woocommerce-info {
+		margin: 0 0 16px;
+		padding: 12px 16px;
+		border-radius: var(--t360-radius);
+		background: var(--t360-surface);
+		border-left: 4px solid var(--t360-secondary);
+		list-style: none;
+		font-size: var(--t360-fs-sm);
+	}
+	.woocommerce-error {
+		background: var(--t360-deal-soft);
+		border-left-color: var(--t360-deal);
+	}
+	.woocommerce-message {
+		background: var(--t360-save-soft);
+		border-left-color: var(--t360-save);
+	}
+	.woocommerce-message .button,
+	.woocommerce-info .button {
+		float: right;
+		font-weight: 700;
+		color: var(--t360-secondary);
+	}
+
+	/* Blog list (fallback templates) -------------------------------------- */
+	.t360-postlist {
+		display: grid;
+		gap: 24px;
+	}
+	.t360-postlist__title {
+		margin: 0 0 4px;
+		font-size: var(--t360-fs-lg);
+	}
+	.t360-postlist__excerpt {
+		color: var(--t360-text-2);
+		font-size: var(--t360-fs-sm);
+	}
+}

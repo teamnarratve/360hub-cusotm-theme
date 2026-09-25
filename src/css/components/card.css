@@ -1,0 +1,205 @@
+@layer components {
+	.t360-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		min-width: 0;
+	}
+
+	/* Image well: fixed 1:1 box reserves space (no layout shift). */
+	.t360-card__media {
+		position: relative;
+		aspect-ratio: 1 / 1;
+		border-radius: var(--t360-radius);
+		background: var(--t360-surface);
+		overflow: hidden;
+	}
+	.t360-card__img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		padding: 8%;
+		/* Product shots on white blend into the grey well. */
+		mix-blend-mode: multiply;
+		transition: transform var(--t360-dur) var(--t360-ease);
+	}
+	@media (hover: hover) {
+		.t360-card:hover .t360-card__img {
+			transform: scale(1.03);
+		}
+	}
+	.t360-card.is-out .t360-card__img {
+		opacity: 0.55;
+	}
+
+	.t360-card__badge {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		padding: 3px 6px;
+		border-radius: var(--t360-radius-sm);
+		background: var(--t360-deal);
+		color: #fff;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		line-height: 1.2;
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* Above the stretched title link. */
+	.t360-card__wish {
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		z-index: 2;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--t360-text-2);
+	}
+	.t360-card__wish .t360-icon {
+		width: 22px;
+		height: 22px;
+		padding: 4px;
+		box-sizing: content-box;
+		border-radius: 50%;
+		background: rgb(255 255 255 / 0.9);
+		transition: transform var(--t360-dur-fast) var(--t360-ease);
+	}
+	.t360-card__wish[aria-pressed="true"] {
+		color: var(--t360-deal);
+	}
+	.t360-card__wish[aria-pressed="true"] .t360-icon {
+		fill: currentColor;
+	}
+	.t360-card__wish:active .t360-icon {
+		transform: scale(0.88);
+	}
+
+	.t360-card__body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 10px;
+	}
+
+	.t360-card__brand {
+		margin: 0;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--t360-text-3);
+	}
+
+	.t360-card__title {
+		margin: 0;
+		font-family: var(--t360-font-body);
+		font-size: var(--t360-fs-sm);
+		font-weight: 500;
+		line-height: 1.4;
+		/* Two lines, always the same height so prices line up across a row. */
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: calc(1.4em * 2);
+		text-wrap: pretty;
+	}
+	/* Stretched link: the whole card is the product link. */
+	.t360-card__link::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+	}
+	.t360-card__link:focus-visible {
+		outline: none;
+	}
+	.t360-card__link:focus-visible::after {
+		outline: 2px solid var(--t360-focus);
+		outline-offset: 4px;
+		border-radius: var(--t360-radius);
+	}
+
+	.t360-card__rating {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		color: var(--t360-text);
+	}
+	.t360-star {
+		width: 14px;
+		height: 14px;
+		color: var(--t360-star);
+	}
+	.t360-card__reviews {
+		font-weight: 400;
+		color: var(--t360-text-3);
+	}
+
+	/* Price block -------------------------------------------------------- */
+	.t360-price {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		column-gap: 6px;
+		row-gap: 0;
+		font-variant-numeric: tabular-nums;
+	}
+	.t360-price__now {
+		font-size: var(--t360-fs-base);
+		font-weight: 800;
+		color: var(--t360-text);
+		white-space: nowrap;
+	}
+	.t360-price__from {
+		font-size: var(--t360-fs-xs);
+		font-weight: 600;
+		color: var(--t360-text-2);
+	}
+	.t360-price__was {
+		font-size: var(--t360-fs-xs);
+		color: var(--t360-text-3);
+		white-space: nowrap;
+	}
+	.t360-price__save {
+		flex-basis: 100%;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		color: var(--t360-save);
+	}
+	.t360-price .woocommerce-Price-currencySymbol {
+		font-size: 0.8em;
+		font-weight: 600;
+	}
+
+	.t360-card__stock {
+		margin: 0;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+	}
+	.t360-card__stock--warn { color: var(--t360-warn); }
+	.t360-card__stock--ok { color: var(--t360-save); }
+	.t360-card__stock--out { color: var(--t360-text-3); }
+
+	.t360-card__foot {
+		position: relative;
+		z-index: 2;
+		margin-top: auto;
+		padding-top: 8px;
+	}
+	.t360-card__atc {
+		width: 100%;
+	}
+}

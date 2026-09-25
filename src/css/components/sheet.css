@@ -1,0 +1,167 @@
+/*
+ * Sheets: native <dialog> opened with showModal(). The browser provides the
+ * focus trap, Esc handling and inert background; this file only positions
+ * and animates them. @starting-style gives an enter transition where
+ * supported; elsewhere sheets simply appear.
+ */
+@layer components {
+	.t360-sheet {
+		position: fixed;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		max-width: none;
+		max-height: none;
+		background: var(--t360-bg);
+		color: var(--t360-text);
+		overflow: hidden;
+		opacity: 1;
+		transition:
+			transform var(--t360-dur) var(--t360-ease),
+			opacity var(--t360-dur) var(--t360-ease),
+			overlay var(--t360-dur) allow-discrete,
+			display var(--t360-dur) allow-discrete;
+	}
+	.t360-sheet::backdrop {
+		background: rgb(11 18 32 / 0.45);
+		transition: opacity var(--t360-dur) var(--t360-ease), overlay var(--t360-dur) allow-discrete, display var(--t360-dur) allow-discrete;
+	}
+	.t360-sheet:not([open]),
+	.t360-sheet:not([open])::backdrop {
+		opacity: 0;
+	}
+	@starting-style {
+		.t360-sheet[open],
+		.t360-sheet[open]::backdrop {
+			opacity: 0;
+		}
+	}
+
+	.t360-sheet__inner {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	.t360-sheet__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		min-height: 56px;
+		padding: var(--t360-safe-top) 8px 0 16px;
+		border-bottom: 1px solid var(--t360-border);
+	}
+	.t360-sheet__title {
+		margin: 0;
+		font-size: var(--t360-fs-lg);
+	}
+	.t360-sheet__body {
+		flex: 1;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		padding-bottom: calc(24px + var(--t360-safe-bottom));
+	}
+
+	/* Drawer (left) ------------------------------------------------------ */
+	.t360-sheet--drawer {
+		inset: 0 auto 0 0;
+		width: min(88vw, 380px);
+		height: 100dvh;
+	}
+	.t360-sheet--drawer:not([open]) {
+		transform: translateX(-100%);
+	}
+	@starting-style {
+		.t360-sheet--drawer[open] {
+			transform: translateX(-100%);
+		}
+	}
+
+	.t360-drawer__account {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 56px;
+		padding: 0 16px;
+		border-bottom: 1px solid var(--t360-border);
+		font-weight: 700;
+	}
+	.t360-drawer__heading {
+		margin: 0;
+		padding: 20px 16px 8px;
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--t360-text-3);
+	}
+	.t360-drawer__list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.t360-drawer__row,
+	.t360-drawer__list--menu a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		min-height: 52px;
+		padding: 0 16px;
+		font-weight: 600;
+		list-style: none;
+	}
+	.t360-drawer__row::-webkit-details-marker {
+		display: none;
+	}
+	.t360-drawer__chev {
+		width: 20px;
+		height: 20px;
+		color: var(--t360-text-3);
+		transition: transform var(--t360-dur-fast) var(--t360-ease);
+	}
+	.t360-drawer__account .t360-drawer__chev {
+		margin-left: auto;
+	}
+	.t360-drawer__group[open] > summary .t360-drawer__chev {
+		transform: rotate(180deg);
+	}
+	.t360-drawer__group[open] > summary {
+		color: var(--t360-secondary);
+	}
+	.t360-drawer__sub {
+		margin: 0;
+		padding: 0 0 8px;
+		list-style: none;
+		background: var(--t360-surface);
+	}
+	.t360-drawer__sub a {
+		display: flex;
+		align-items: center;
+		min-height: 48px;
+		padding: 0 16px 0 28px;
+		color: var(--t360-text-2);
+	}
+	.t360-drawer__list--menu {
+		border-top: 1px solid var(--t360-border);
+		margin-top: 8px;
+	}
+	.t360-drawer__support {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 16px;
+		padding: 14px 16px;
+		border-radius: var(--t360-radius);
+		background: var(--t360-surface);
+		font-size: var(--t360-fs-sm);
+		color: var(--t360-text-2);
+	}
+	.t360-drawer__support strong {
+		display: block;
+		color: var(--t360-text);
+	}
+	.t360-drawer__support .t360-icon {
+		color: var(--t360-save);
+	}
+}

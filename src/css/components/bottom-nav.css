@@ -1,0 +1,58 @@
+@layer components {
+	.t360-bottomnav {
+		position: fixed;
+		inset: auto 0 0;
+		z-index: 45;
+		background: var(--t360-bg);
+		border-top: 1px solid var(--t360-border);
+		padding-bottom: var(--t360-safe-bottom);
+		padding-left: env(safe-area-inset-left, 0px);
+		padding-right: env(safe-area-inset-right, 0px);
+	}
+	@media (min-width: 1024px) {
+		.t360-bottomnav { display: none; }
+	}
+
+	.t360-bottomnav__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+		height: var(--t360-bottom-nav-h);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.t360-bottomnav__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2px;
+		height: 100%;
+		color: var(--t360-text-3);
+		font-size: var(--t360-fs-xs);
+		font-weight: 600;
+		line-height: 1.1;
+	}
+	.t360-bottomnav__item[aria-current="page"] {
+		color: var(--t360-secondary);
+	}
+	.t360-bottomnav__item[aria-current="page"] .t360-bottomnav__label {
+		color: var(--t360-text);
+	}
+
+	.t360-bottomnav__icon {
+		position: relative;
+		display: inline-flex;
+	}
+	.t360-bottomnav__icon .t360-badge {
+		top: -6px;
+		right: -10px;
+	}
+	.t360-bottomnav__label {
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}

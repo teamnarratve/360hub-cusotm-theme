@@ -1,0 +1,194 @@
+@layer components {
+	.t360-notice {
+		background: var(--t360-primary);
+		color: var(--t360-on-primary);
+		font-size: var(--t360-fs-xs);
+		font-weight: 600;
+		text-align: center;
+	}
+	.t360-notice p,
+	.t360-notice a {
+		display: block;
+		margin: 0;
+		padding: 8px var(--t360-gutter);
+	}
+
+	.t360-header {
+		position: sticky;
+		top: 0;
+		z-index: 40;
+		background: var(--t360-bg);
+		border-bottom: 1px solid var(--t360-border);
+		padding-top: var(--t360-safe-top);
+		transition: transform var(--t360-dur) var(--t360-ease);
+	}
+
+	/* Mobile: tuck the logo row away while scrolling down; search stays pinned. */
+	@media (max-width: 1023.98px) {
+		.t360-header.is-condensed {
+			transform: translateY(calc(var(--t360-header-h) * -1));
+		}
+	}
+
+	.t360-header__bar {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		height: var(--t360-header-h);
+		padding-inline: calc(var(--t360-gutter) - 10px);
+	}
+
+	.t360-logo {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		margin-right: auto;
+		padding: 0 6px;
+		color: var(--t360-primary);
+	}
+	.t360-logo__img {
+		width: auto;
+		max-height: 32px;
+	}
+	.t360-logo__text {
+		font-family: var(--t360-font-heading);
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+
+	.t360-header__actions {
+		display: flex;
+		align-items: center;
+	}
+
+	.t360-header__search {
+		padding-bottom: 8px;
+		height: var(--t360-search-h);
+	}
+
+	.t360-header__search-lg {
+		display: none;
+	}
+
+	@media (min-width: 1024px) {
+		.t360-header__bar {
+			gap: 24px;
+			padding-inline: var(--t360-gutter);
+		}
+		.t360-logo {
+			margin-right: 0;
+			padding: 0;
+		}
+		.t360-logo__img { max-height: 40px; }
+		.t360-logo__text { font-size: 1.5rem; }
+		.t360-header__search-lg {
+			display: block;
+			flex: 1;
+			max-width: 640px;
+			margin-inline: auto;
+		}
+		.t360-header__actions { gap: 4px; }
+	}
+
+	/* Search field (header + overlay) ---------------------------------- */
+	.t360-searchfield {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+	.t360-searchfield__icon {
+		position: absolute;
+		left: 12px;
+		width: 20px;
+		height: 20px;
+		color: var(--t360-text-3);
+		pointer-events: none;
+	}
+	.t360-searchfield__input {
+		width: 100%;
+		height: 44px;
+		padding: 0 44px 0 42px;
+		border: 1px solid var(--t360-surface-2);
+		border-radius: var(--t360-radius);
+		background: var(--t360-surface);
+		color: var(--t360-text);
+		appearance: none;
+	}
+	.t360-searchfield__input::placeholder {
+		color: var(--t360-text-3);
+		opacity: 1;
+	}
+	.t360-searchfield__input::-webkit-search-cancel-button {
+		display: none;
+	}
+	.t360-searchfield__input:focus {
+		border-color: var(--t360-border-strong);
+		background: var(--t360-bg);
+	}
+	.t360-searchfield__submit {
+		/* Enter submits; the button is kept for assistive tech and no-JS. */
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+	.t360-searchfield__clear {
+		position: absolute;
+		right: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border: 0;
+		background: none;
+		color: var(--t360-text-2);
+	}
+	.t360-searchfield__clear .t360-icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	/* Desktop category bar --------------------------------------------- */
+	.t360-catbar {
+		display: none;
+	}
+	@media (min-width: 1024px) {
+		.t360-catbar {
+			display: block;
+			border-top: 1px solid var(--t360-border);
+		}
+		.t360-catbar__list {
+			display: flex;
+			gap: 4px;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+		.t360-catbar__list a {
+			display: flex;
+			align-items: center;
+			height: 44px;
+			padding: 0 12px;
+			font-size: var(--t360-fs-sm);
+			font-weight: 600;
+			white-space: nowrap;
+			color: var(--t360-text-2);
+			border-bottom: 2px solid transparent;
+		}
+		.t360-catbar__list a:hover,
+		.t360-catbar__list a[aria-current="page"],
+		.t360-catbar__list .current-menu-item > a {
+			color: var(--t360-text);
+			border-bottom-color: var(--t360-secondary);
+		}
+		.t360-catbar__list li:first-child a {
+			padding-left: 0;
+		}
+	}
+}

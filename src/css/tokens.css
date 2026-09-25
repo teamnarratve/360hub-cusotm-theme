@@ -1,0 +1,88 @@
+/*
+ * Design tokens. The single source of visual values for the theme.
+ * Brand colours (primary, secondary, cta and their on-colours) and fonts are
+ * overridden at runtime by the Customizer (Core\Assets::token_css()).
+ */
+:root {
+	/* Brand */
+	--t360-primary: #0B1220;
+	--t360-on-primary: #FFFFFF;
+	--t360-secondary: #1D4ED8;
+	--t360-on-secondary: #FFFFFF;
+	--t360-cta: #1238C4;
+	--t360-on-cta: #FFFFFF;
+	--t360-cta-hover: color-mix(in srgb, var(--t360-cta) 86%, #000);
+	--t360-focus: var(--t360-secondary);
+
+	/* Neutrals */
+	--t360-text: #0B1220;
+	--t360-text-2: #475467;
+	--t360-text-3: #667085;
+	--t360-bg: #FFFFFF;
+	--t360-surface: #F4F6F8;
+	--t360-surface-2: #EAEDF1;
+	--t360-border: #E4E7EC;
+	--t360-border-strong: #7D8797;
+
+	/* Semantic */
+	--t360-deal: #C8102E;
+	--t360-deal-soft: #FEF3F2;
+	--t360-save: #067647;
+	--t360-save-soft: #ECFDF3;
+	--t360-warn: #B54708;
+	--t360-star: #F79009;
+
+	/* Type */
+	--t360-font-system: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+	--t360-font-body: var(--t360-font-system);
+	--t360-font-heading: var(--t360-font-system);
+	--t360-fs-xs: 0.75rem;
+	--t360-fs-sm: 0.875rem;
+	--t360-fs-base: 1rem;
+	--t360-fs-lg: 1.125rem;
+	--t360-fs-xl: 1.25rem;
+	--t360-fs-2xl: 1.5rem;
+	--t360-lh: 1.5;
+	--t360-lh-tight: 1.25;
+
+	/* Shape & elevation */
+	--t360-radius-sm: 6px;
+	--t360-radius: 8px;
+	--t360-radius-lg: 12px;
+	--t360-shadow-float: 0 -1px 0 var(--t360-border), 0 8px 24px rgb(11 18 32 / 0.08);
+
+	/* Motion */
+	--t360-dur-fast: 150ms;
+	--t360-dur: 220ms;
+	--t360-ease: cubic-bezier(0.2, 0, 0, 1);
+
+	/* Layout */
+	--t360-gutter: 16px;
+	--t360-max: 1320px;
+	--t360-header-h: 56px;
+	--t360-search-h: 52px;
+	--t360-bottom-nav-h: 56px;
+	--t360-safe-bottom: env(safe-area-inset-bottom, 0px);
+	--t360-safe-top: env(safe-area-inset-top, 0px);
+}
+
+@media (min-width: 640px) {
+	:root { --t360-gutter: 24px; }
+}
+
+@media (min-width: 1024px) {
+	:root {
+		--t360-gutter: 32px;
+		--t360-fs-lg: 1.25rem;
+		--t360-fs-xl: 1.5rem;
+		--t360-fs-2xl: 2rem;
+		--t360-header-h: 72px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--t360-dur-fast: 0ms;
+		--t360-dur: 0ms;
+	}
+}

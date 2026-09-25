@@ -1,0 +1,98 @@
+@layer base {
+	html {
+		-webkit-text-size-adjust: 100%;
+		text-size-adjust: 100%;
+		-webkit-tap-highlight-color: transparent;
+		touch-action: manipulation;
+		scroll-padding-top: calc(var(--t360-search-h) + 16px);
+	}
+
+	/* Lock page scroll while a modal sheet is open. */
+	html:has(dialog[open]) {
+		overflow: hidden;
+	}
+
+	body {
+		margin: 0;
+		background: var(--t360-bg);
+		color: var(--t360-text);
+		font-family: var(--t360-font-body);
+		font-size: var(--t360-fs-base);
+		line-height: var(--t360-lh);
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	/* Room for the fixed bottom nav + home indicator. */
+	body.has-bottom-nav {
+		padding-bottom: calc(var(--t360-bottom-nav-h) + var(--t360-safe-bottom));
+	}
+	@media (min-width: 1024px) {
+		body.has-bottom-nav { padding-bottom: 0; }
+	}
+
+	h1, h2, h3, h4 {
+		font-family: var(--t360-font-heading);
+		line-height: var(--t360-lh-tight);
+		font-weight: 600;
+		color: var(--t360-text);
+		text-wrap: balance;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--t360-focus);
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	input, select, textarea, button {
+		font: inherit;
+		color: inherit;
+	}
+
+	/* 16px inputs stop iOS from zooming on focus. */
+	input, select, textarea {
+		font-size: max(16px, 1em);
+	}
+
+	button, [role="button"], summary, label[for], select {
+		cursor: pointer;
+	}
+
+	img, svg, video {
+		max-width: 100%;
+		height: auto;
+	}
+
+	del {
+		text-decoration-thickness: 1px;
+	}
+
+	/* Accessible hidden text (WordPress and WooCommerce also use this class). */
+	.screen-reader-text {
+		border: 0;
+		clip-path: inset(50%);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute !important;
+		width: 1px;
+		word-wrap: normal !important;
+		white-space: nowrap;
+	}
+
+	.no-js [data-t360-requires-js] {
+		display: none !important;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+}

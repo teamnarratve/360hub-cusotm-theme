@@ -1,0 +1,146 @@
+@layer components {
+	.t360-footer {
+		margin-top: 24px;
+		background: var(--t360-surface);
+		color: var(--t360-text-2);
+		font-size: var(--t360-fs-sm);
+	}
+	.t360-footer__grid {
+		display: grid;
+		padding-block: 32px 8px;
+	}
+	@media (min-width: 1024px) {
+		.t360-footer__grid {
+			grid-template-columns: 2fr 1fr 1fr;
+			gap: 48px;
+			padding-block: 48px 32px;
+		}
+	}
+
+	.t360-footer__brand {
+		padding-bottom: 16px;
+	}
+	.t360-logo--footer {
+		margin: 0;
+		padding: 0;
+	}
+	.t360-footer__about {
+		margin: 8px 0 12px;
+		max-width: 44ch;
+	}
+	.t360-footer__contact {
+		display: grid;
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.t360-footer__contact a {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		min-height: 44px;
+		font-weight: 600;
+		color: var(--t360-text);
+	}
+	.t360-footer__contact .t360-icon {
+		width: 20px;
+		height: 20px;
+		color: var(--t360-text-3);
+	}
+
+	/* Link columns: disclosure rows on mobile, open columns on desktop. */
+	.t360-footer__col {
+		border-top: 1px solid var(--t360-border);
+	}
+	.t360-footer__title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		min-height: 52px;
+		font-family: var(--t360-font-heading);
+		font-size: var(--t360-fs-base);
+		font-weight: 600;
+		color: var(--t360-text);
+		list-style: none;
+	}
+	.t360-footer__title::-webkit-details-marker {
+		display: none;
+	}
+	.t360-footer__title .t360-icon {
+		width: 20px;
+		height: 20px;
+		transition: transform var(--t360-dur-fast) var(--t360-ease);
+	}
+	.t360-footer__col[open] .t360-footer__title .t360-icon {
+		transform: rotate(180deg);
+	}
+	.t360-footer__links {
+		margin: 0;
+		padding: 0 0 12px;
+		list-style: none;
+	}
+	.t360-footer__links a {
+		display: flex;
+		align-items: center;
+		min-height: 40px;
+	}
+	.t360-footer__links a:hover {
+		color: var(--t360-text);
+	}
+	@media (min-width: 1024px) {
+		.t360-footer__col {
+			border-top: 0;
+		}
+		.t360-footer__title {
+			min-height: 0;
+			margin-bottom: 8px;
+			pointer-events: none;
+		}
+		.t360-footer__title .t360-icon {
+			display: none;
+		}
+	}
+
+	.t360-footer__bottom {
+		border-top: 1px solid var(--t360-border);
+	}
+	.t360-footer__bottom-inner {
+		display: grid;
+		gap: 12px;
+		padding-block: 16px;
+	}
+	@media (min-width: 1024px) {
+		.t360-footer__bottom-inner {
+			grid-template-columns: 1fr auto;
+			align-items: center;
+		}
+	}
+	.t360-footer__payments {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.t360-footer__payments li {
+		padding: 4px 8px;
+		border: 1px solid var(--t360-border);
+		border-radius: var(--t360-radius-sm);
+		background: var(--t360-bg);
+		font-size: var(--t360-fs-xs);
+		font-weight: 700;
+		color: var(--t360-text-2);
+	}
+	.t360-footer__copy {
+		margin: 0;
+		font-size: var(--t360-fs-xs);
+		color: var(--t360-text-3);
+	}
+
+	/* Interim styling for WooCommerce pages not yet redesigned (phases 3–6). */
+	.t360-page--wc .t360-page__title {
+		font-size: var(--t360-fs-xl);
+	}
+}

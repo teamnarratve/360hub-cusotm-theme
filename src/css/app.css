@@ -1,0 +1,50 @@
+/*
+ * The360Hub — stylesheet entry.
+ * Build: npm run build:css  →  the360hub/assets/css/app.css
+ *
+ * Tailwind scans only the theme's PHP templates. Utilities are used for
+ * one-off layout in templates; recurring components are defined below as
+ * small class-based blocks that read design tokens.
+ */
+@import "tailwindcss" source(none);
+@source "../../the360hub/**/*.php";
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./components/ui.css";
+@import "./components/layout.css";
+@import "./components/header.css";
+@import "./components/sheet.css";
+@import "./components/search.css";
+@import "./components/bottom-nav.css";
+@import "./components/card.css";
+@import "./components/home.css";
+@import "./components/archive.css";
+@import "./components/footer.css";
+
+/* Tailwind theme → design tokens. Default palette/fonts are cleared so only
+   token-backed utilities exist (no raw colours in templates). */
+@theme {
+	--color-*: initial;
+	--font-*: initial;
+}
+
+@theme inline {
+	--color-primary: var(--t360-primary);
+	--color-secondary: var(--t360-secondary);
+	--color-cta: var(--t360-cta);
+	--color-text: var(--t360-text);
+	--color-text-2: var(--t360-text-2);
+	--color-text-3: var(--t360-text-3);
+	--color-bg: var(--t360-bg);
+	--color-surface: var(--t360-surface);
+	--color-border: var(--t360-border);
+	--color-deal: var(--t360-deal);
+	--color-save: var(--t360-save);
+	--color-warn: var(--t360-warn);
+	--font-body: var(--t360-font-body);
+	--font-heading: var(--t360-font-heading);
+	--radius-sm: var(--t360-radius-sm);
+	--radius-md: var(--t360-radius);
+	--radius-lg: var(--t360-radius-lg);
+}

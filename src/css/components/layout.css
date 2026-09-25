@@ -1,0 +1,110 @@
+@layer components {
+	.t360-container {
+		width: 100%;
+		max-width: calc(var(--t360-max) + var(--t360-gutter) * 2);
+		margin-inline: auto;
+		padding-inline: var(--t360-gutter);
+	}
+
+	.t360-main:focus {
+		outline: none;
+	}
+
+	.t360-page {
+		padding-block: 16px 40px;
+	}
+	.t360-page__title {
+		margin: 8px 0 16px;
+		font-size: var(--t360-fs-2xl);
+	}
+
+	/* Home sections ----------------------------------------------------- */
+	.t360-section {
+		padding-block: 20px;
+	}
+	.t360-section--tight {
+		padding-block: 12px;
+	}
+	.t360-section__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 12px;
+	}
+	.t360-section__title {
+		margin: 0;
+		font-size: var(--t360-fs-xl);
+	}
+	.t360-section__more {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		min-height: 44px;
+		color: var(--t360-secondary);
+		font-size: var(--t360-fs-sm);
+		font-weight: 700;
+		white-space: nowrap;
+	}
+	.t360-section__more .t360-icon {
+		width: 18px;
+		height: 18px;
+	}
+	@media (min-width: 1024px) {
+		.t360-section { padding-block: 32px; }
+	}
+
+	/* Product grid: 2 → 3 → 4 → 5 columns -------------------------------- */
+	.t360-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px 12px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	@media (min-width: 640px) {
+		.t360-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 16px; }
+	}
+	@media (min-width: 1024px) {
+		.t360-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 20px; }
+	}
+	@media (min-width: 1280px) {
+		.t360-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+	}
+	.t360-grid__item {
+		display: flex;
+		min-width: 0;
+	}
+
+	/* Product rail: horizontal on mobile, grid on desktop ------------------ */
+	.t360-rail {
+		display: grid;
+		grid-auto-flow: column;
+		/* ~2.3 cards visible so the scroll affordance is obvious. */
+		grid-auto-columns: calc((100% - 24px) / 2.3);
+		gap: 12px;
+		margin: 0 calc(var(--t360-gutter) * -1);
+		padding: 0 var(--t360-gutter) 4px;
+		list-style: none;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--t360-gutter);
+		scrollbar-width: none;
+	}
+	.t360-rail::-webkit-scrollbar {
+		display: none;
+	}
+	.t360-rail > li {
+		scroll-snap-align: start;
+		display: flex;
+		min-width: 0;
+	}
+	@media (min-width: 640px) {
+		.t360-rail { grid-auto-columns: calc((100% - 48px) / 3.4); gap: 16px; }
+	}
+	@media (min-width: 1024px) {
+		.t360-rail { grid-auto-columns: calc((100% - 80px) / 5); gap: 20px; margin: 0; padding: 0 0 4px; }
+	}
+}

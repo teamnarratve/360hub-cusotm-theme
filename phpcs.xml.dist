@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<ruleset name="The360Hub">
+	<description>WordPress coding standards for The360Hub theme.</description>
+	<file>the360hub</file>
+	<exclude-pattern>the360hub/assets/*</exclude-pattern>
+	<arg name="extensions" value="php"/>
+	<arg value="sp"/>
+
+	<config name="testVersion" value="8.1-"/>
+	<config name="minimum_wp_version" value="6.5"/>
+
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress-Docs">
+		<!-- Templates document their $args in the file header instead. -->
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+		<exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array"><element value="the360hub"/></property>
+		</properties>
+	</rule>
+	<!-- Templates are included inside functions (load_template / wc_get_template),
+	     so their variables are local, and they must fire WooCommerce's own hooks. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound">
+		<exclude-pattern>the360hub/template-parts/*</exclude-pattern>
+		<exclude-pattern>the360hub/woocommerce/*</exclude-pattern>
+		<exclude-pattern>the360hub/page-templates/*</exclude-pattern>
+		<exclude-pattern>the360hub/*.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>the360hub/template-parts/product/card.php</exclude-pattern>
+		<exclude-pattern>the360hub/woocommerce/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="t360"/>
+				<element value="the360hub"/>
+				<element value="The360Hub"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>
